@@ -1,0 +1,40 @@
+﻿@model List<Product>
+@{
+	Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title>Каталог</title>
+</head>
+
+<body>
+	<h2>Список товаров</h2>
+	<table class="table">
+		<tr>
+			<th>Название</th>
+			<th>Цена</th>
+		</tr>
+		@foreach (var item in @Model)
+		{
+			<tr>
+				<td>@item.Name</td>
+				<td>@item.Price</td>
+				<td>
+					<form asp-controller="Products" asp-action="AddToCart" method="post" asp-route-productId="@item.Id">
+						<input type="submit" value="Добавить в корзину" />
+					</form>
+				</td>
+			</tr>
+		}
+	</table>
+
+	<p>
+		<button onclick="document.location='/cart'">Корзина</button>
+	</p>
+</body>
+
+</html>

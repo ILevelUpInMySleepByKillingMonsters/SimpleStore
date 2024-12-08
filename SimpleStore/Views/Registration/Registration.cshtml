@@ -1,0 +1,42 @@
+﻿@model RegistrationViewModel
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title>Регистрация</title>
+</head>
+
+<body>
+	<form asp-controller="registration" asp-action="create" method="post">
+		<div asp-validation-summary="ModelOnly"></div>
+		<div>
+			<p>
+				<label asp-for="Email"></label><br />
+				<input type="text" asp-for="Email" />
+				<span asp-validation-for="Email" />
+			</p>
+			<p>
+				<label asp-for="Password"></label><br />
+				<input type="password" asp-for="Password" />
+				<span asp-validation-for="Password" />
+			</p>
+			<p>
+				<label asp-for="RepeatPassword"></label><br />
+				<input type="password" asp-for="RepeatPassword" />
+				<span asp-validation-for="RepeatPassword" />
+			</p>
+			<p>
+				<input type="submit" value="Зарегистрироватся" />
+			</p>
+		</div>
+	</form>
+	<button onclick="document.location='/login'">Войти</button>
+
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
+	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>
+</body>
+
+</html>
