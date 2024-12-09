@@ -4,6 +4,7 @@ using EmptyStore.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using SimpleStore;
 using System.Security.Claims;
 
 namespace EmptyStore.Controllers
@@ -11,10 +12,12 @@ namespace EmptyStore.Controllers
     public class RegistrationController : Controller
     {
         private readonly ShopContext _context;
+        private readonly ILoginService _loginService;
 
-        public RegistrationController(ShopContext context)
+        public RegistrationController(ILoginService loginService, ShopContext context)
         {
             _context = context;
+            _loginService = loginService;
         }
 
         [HttpGet]
@@ -48,9 +51,10 @@ namespace EmptyStore.Controllers
             _context.Persons.Add(person);
             _context.SaveChanges();
 
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, person.Id.ToString()) };
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
-            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+            _loginService.SignIn(HttpContext, person.Id.ToString());
+            //var claims = new List<Claim> { new Claim(ClaimTypes.Name, person.Id.ToString()) };
+            //ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
+            //HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
             return Redirect("~/products");
         }
 

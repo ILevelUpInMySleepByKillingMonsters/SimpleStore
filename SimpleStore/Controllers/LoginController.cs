@@ -5,16 +5,20 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using EmptyStore.Contexts;
+using SimpleStore;
+using System;
 
 namespace EmptyStore.Controllers
 {
     public class LoginController : Controller
     {
         private readonly ShopContext _context;
+        private readonly ILoginService _loginService;
 
-        public LoginController(ShopContext context)
+        public LoginController(ILoginService loginService, ShopContext context)
         {
             _context = context;
+            _loginService = loginService;
         }
 
         [HttpGet]
@@ -36,9 +40,10 @@ namespace EmptyStore.Controllers
                 }
 
 
-                var claims = new List<Claim> { new Claim(ClaimTypes.Name, person.Id.ToString()) };
-                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
-                HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                _loginService.SignIn(HttpContext, person.Id.ToString());
+                //var claims = new List<Claim> { new Claim(ClaimTypes.Name, person.Id.ToString()) };
+                //ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
+                //HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
                 return Redirect("~/products");
             }
@@ -51,7 +56,8 @@ namespace EmptyStore.Controllers
         [HttpPost]
         public IActionResult Logout()
         {
-            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            _loginService.SignOut(HttpContext);
+            //HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Redirect("~/");
         }
     }

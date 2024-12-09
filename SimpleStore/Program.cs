@@ -2,6 +2,7 @@ using EmptyStore.Contexts;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SimpleStore;
 
 class Program
 {
@@ -11,6 +12,7 @@ class Program
         string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 
         builder.Services.AddDbContext<ShopContext>(options => options.UseNpgsql(connection));
+        builder.Services.AddLoginService();
 
         builder.Services
             .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
