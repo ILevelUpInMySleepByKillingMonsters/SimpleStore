@@ -1,4 +1,4 @@
-﻿namespace EmptyStore.Entities
+﻿namespace Data.Entity
 {
     public class Product
     {

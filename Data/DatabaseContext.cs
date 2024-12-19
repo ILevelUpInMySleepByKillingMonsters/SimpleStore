@@ -1,24 +1,24 @@
-﻿using EmptyStore.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Data.Entity;
 
-namespace EmptyStore.Contexts
+namespace Data
 {
-    public class ShopContext : DbContext
+    public class DatabaseContext : DbContext
     {
-        public DbSet<Person> Persons { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
 
-        public ShopContext(DbContextOptions<ShopContext> options)
-            : base(options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options)
+        : base(options)
         {
             Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Person>().HasData(
-                new Person { Id = 1, Email = "tom@mail.com", Password = "1111" }
+            modelBuilder.Entity<User>().HasData(
+                new User { Id = 1, Email = "tom@mail.com", Password = "1111", Role = "Admin" }
                 );
             modelBuilder.Entity<Product>().HasData(
                 new Product { Id = 1, Name = "Iphone 8", Price = 1000 },
